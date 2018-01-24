@@ -6,6 +6,8 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
+import Foundation
+
 enum AreaAccess {
     case amusementAreas
     case kitchenAreas
@@ -31,6 +33,10 @@ protocol AreaAndRideAccess {
     var rideAccess: [RideAccess] { get }
 }
 
+enum InitializerError: Error {
+    case missingDateOfBirth
+    case missingInfo
+}
 
 struct ClassicGuest: AreaAndRideAccess {
     var areaAccess: [AreaAccess] = [.amusementAreas]
@@ -50,6 +56,16 @@ struct VIPGuest: AreaAndRideAccess, DiscountAccess {
 struct FreeChildGuest: AreaAndRideAccess {
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
+    
+    var dateOfBirth: Int?
+    
+    init(dateOfBirth: Int?) throws {
+        if dateOfBirth == nil {
+            throw InitializerError.missingDateOfBirth
+        }
+        self.dateOfBirth = dateOfBirth
+    }
+    
 }
 
 // Protocol for Staff info
@@ -77,9 +93,9 @@ struct EmployeeFoodService: StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnFood: Int = 15
     var discountOnMerchandise: Int = 25
     
-    init?(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) {
+    init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
         if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            return nil
+            throw InitializerError.missingInfo
         }
         self.firstName = firstName
         self.lastName = lastName
@@ -105,10 +121,10 @@ struct EmployeeRideService : StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnFood: Int = 15
     var discountOnMerchandise: Int = 25
     
-     // Failable initializer
-    init?(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) {
+    
+    init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
         if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            return nil
+            throw InitializerError.missingInfo
         }
         self.firstName = firstName
         self.lastName = lastName
@@ -134,9 +150,9 @@ struct EmployeeMaintenance: StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnFood: Int = 15
     var discountOnMerchandise: Int = 25
     
-    init?(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) {
+    init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
         if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            return nil
+            throw InitializerError.missingInfo
         }
         self.firstName = firstName
         self.lastName = lastName
@@ -162,9 +178,9 @@ struct Manager: StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnFood: Int = 25
     var discountOnMerchandise: Int = 25
     
-    init?(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) {
+    init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
         if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            return nil
+            throw InitializerError.missingInfo
         }
         self.firstName = firstName
         self.lastName = lastName
