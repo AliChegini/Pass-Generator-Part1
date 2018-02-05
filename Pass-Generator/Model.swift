@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AreaAccess {
+enum AreaAccess: String {
     case amusementAreas
     case kitchenAreas
     case rideControlAreas
@@ -28,23 +28,31 @@ protocol DiscountAccess {
 }
 
 
-protocol AreaAndRideAccess {
+protocol AccessibleAreas {
     var areaAccess: [AreaAccess] { get }
+}
+
+protocol AccessibleRides {
     var rideAccess: [RideAccess] { get }
 }
 
 enum InitializerError: Error {
     case missingDateOfBirth
-    case missingInfo
+    case missingFirstName
+    case missingLastName
+    case missingStreetAddress
+    case city
+    case state
+    case zipCode
 }
 
-struct ClassicGuest: AreaAndRideAccess {
+struct ClassicGuest: AccessibleAreas, AccessibleRides {
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
 }
 
 
-struct VIPGuest: AreaAndRideAccess, DiscountAccess {
+struct VIPGuest: AccessibleAreas, AccessibleRides, DiscountAccess {
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides, .skipAllRides]
     
@@ -53,7 +61,7 @@ struct VIPGuest: AreaAndRideAccess, DiscountAccess {
 }
 
 
-struct FreeChildGuest: AreaAndRideAccess {
+struct FreeChildGuest: AccessibleAreas, AccessibleRides {
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
     
@@ -79,7 +87,7 @@ protocol StaffInfo {
 }
 
 // Structs to represent different types of employees
-struct EmployeeFoodService: StaffInfo, AreaAndRideAccess, DiscountAccess {
+struct EmployeeFoodService: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
     var lastName: String
     var streetAddress: String
@@ -94,9 +102,21 @@ struct EmployeeFoodService: StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnMerchandise: Int = 25
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
-        if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            throw InitializerError.missingInfo
+        
+        if firstName.isEmpty {
+            throw InitializerError.missingFirstName
+        } else if lastName.isEmpty {
+            throw InitializerError.missingLastName
+        } else if streetAddress.isEmpty {
+            throw InitializerError.missingStreetAddress
+        } else if city.isEmpty {
+            throw InitializerError.city
+        } else if state.isEmpty {
+            throw InitializerError.state
+        } else if zipCode.isEmpty {
+            throw InitializerError.zipCode
         }
+        
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
@@ -107,7 +127,7 @@ struct EmployeeFoodService: StaffInfo, AreaAndRideAccess, DiscountAccess {
 }
 
 
-struct EmployeeRideService : StaffInfo, AreaAndRideAccess, DiscountAccess {
+struct EmployeeRideService : StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
     var lastName: String
     var streetAddress: String
@@ -123,9 +143,21 @@ struct EmployeeRideService : StaffInfo, AreaAndRideAccess, DiscountAccess {
     
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
-        if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            throw InitializerError.missingInfo
+        
+        if firstName.isEmpty {
+            throw InitializerError.missingFirstName
+        } else if lastName.isEmpty {
+            throw InitializerError.missingLastName
+        } else if streetAddress.isEmpty {
+            throw InitializerError.missingStreetAddress
+        } else if city.isEmpty {
+            throw InitializerError.city
+        } else if state.isEmpty {
+            throw InitializerError.state
+        } else if zipCode.isEmpty {
+            throw InitializerError.zipCode
         }
+        
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
@@ -136,7 +168,7 @@ struct EmployeeRideService : StaffInfo, AreaAndRideAccess, DiscountAccess {
 }
 
 
-struct EmployeeMaintenance: StaffInfo, AreaAndRideAccess, DiscountAccess {
+struct EmployeeMaintenance: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
     var lastName: String
     var streetAddress: String
@@ -151,9 +183,21 @@ struct EmployeeMaintenance: StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnMerchandise: Int = 25
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
-        if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            throw InitializerError.missingInfo
+        
+        if firstName.isEmpty {
+            throw InitializerError.missingFirstName
+        } else if lastName.isEmpty {
+            throw InitializerError.missingLastName
+        } else if streetAddress.isEmpty {
+            throw InitializerError.missingStreetAddress
+        } else if city.isEmpty {
+            throw InitializerError.city
+        } else if state.isEmpty {
+            throw InitializerError.state
+        } else if zipCode.isEmpty {
+            throw InitializerError.zipCode
         }
+        
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
@@ -164,7 +208,7 @@ struct EmployeeMaintenance: StaffInfo, AreaAndRideAccess, DiscountAccess {
 }
 
 
-struct Manager: StaffInfo, AreaAndRideAccess, DiscountAccess {
+struct Manager: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
     var lastName: String
     var streetAddress: String
@@ -179,9 +223,21 @@ struct Manager: StaffInfo, AreaAndRideAccess, DiscountAccess {
     var discountOnMerchandise: Int = 25
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
-        if firstName.isEmpty || lastName.isEmpty || streetAddress.isEmpty || city.isEmpty || state.isEmpty || zipCode.isEmpty {
-            throw InitializerError.missingInfo
+        
+        if firstName.isEmpty {
+            throw InitializerError.missingFirstName
+        } else if lastName.isEmpty {
+            throw InitializerError.missingLastName
+        } else if streetAddress.isEmpty {
+            throw InitializerError.missingStreetAddress
+        } else if city.isEmpty {
+            throw InitializerError.city
+        } else if state.isEmpty {
+            throw InitializerError.state
+        } else if zipCode.isEmpty {
+            throw InitializerError.zipCode
         }
+        
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
@@ -190,3 +246,63 @@ struct Manager: StaffInfo, AreaAndRideAccess, DiscountAccess {
         self.zipCode = zipCode
     }
 }
+
+// Make a protocol that requires two swipe methods and accessAreas, rideAccess
+// create 5 gates - struct - that conforms to the protocol
+// think about the input type for this method in a way that
+// all the gates works with same type of input !
+// refer to http://sketchytech.blogspot.dk/2014/09/polymorphism-in-swift-xcode-601.html
+/*
+ case amusementAreas
+ case kitchenAreas
+ case rideControlAreas
+ case maintenanceAreas
+ case officeAreas
+ */
+
+
+struct AmusementGate {
+    static func swipe(user: AccessibleAreas) -> Bool {
+        for area in user.areaAccess {
+            if area == AreaAccess.amusementAreas {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+
+func trying() {
+    
+    let guest = ClassicGuest()
+    print(AmusementGate.swipe(user: guest))
+    /*
+    do {
+        let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "ab", city: "new york", state: "DC", zipCode: "1234")
+        print(AmusementGate.swipe(user: manager))
+    } catch {
+        print("Error")
+    }
+    */
+}
+
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
