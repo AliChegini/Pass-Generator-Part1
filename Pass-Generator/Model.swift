@@ -36,6 +36,7 @@ protocol AccessibleRides {
     var rideAccess: [RideAccess] { get }
 }
 
+// Enum for the errors
 enum InitializerError: Error {
     case missingDateOfBirth
     case missingFirstName
@@ -86,6 +87,7 @@ protocol StaffInfo {
     var zipCode: String { get }
 }
 
+
 // Structs to represent different types of employees
 struct EmployeeFoodService: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
@@ -102,6 +104,9 @@ struct EmployeeFoodService: StaffInfo, AccessibleAreas, AccessibleRides, Discoun
     var discountOnMerchandise: Int = 25
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+        
+        /* Ignore the repeated lines of code, I realize some refactoring is needed,
+           as I am repeating myself but for now I am just trying to make it work !!! */
         
         if firstName.isEmpty {
             throw InitializerError.missingFirstName
@@ -247,20 +252,48 @@ struct Manager: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     }
 }
 
-// Make a protocol that requires two swipe methods and accessAreas, rideAccess
-// create 5 gates - struct - that conforms to the protocol
-// think about the input type for this method in a way that
-// all the gates works with same type of input !
-// refer to http://sketchytech.blogspot.dk/2014/09/polymorphism-in-swift-xcode-601.html
+
+
+class Reader {
+    
+    enum Access {
+        case granted
+        case denied
+    }
+    
+    static func swipe(entrant: AccessibleAreas) -> Bool {
+        var accessGranted: Bool = false
+        // I need to compare the entrant area access with the gate name but I dont know how.
+        // Just to give a representation of what I want to do
+        // How to tell the swipe method which gate is calling it.
+        
+        for area in entrant.areaAccess {
+            switch area {
+            case .amusementAreas:
+                accessGranted = true
+            case .kitchenAreas:
+                accessGranted = true
+            case .maintenanceAreas:
+                accessGranted = true
+            case .officeAreas:
+                accessGranted = true
+            case .rideControlAreas:
+                accessGranted = true
+            default: return false
+            }
+        }
+        return accessGranted
+    }
+}
+
+
+
+// This is another attempt to create 5 different gates
+// so the swipe method knows which gate is being called from
+// Not sure! trying to do polymorphism by making the swipe methods taking a unique input type
+// I have read the following: http://sketchytech.blogspot.dk/2014/09/polymorphism-in-swift-xcode-601.html
+
 /*
- case amusementAreas
- case kitchenAreas
- case rideControlAreas
- case maintenanceAreas
- case officeAreas
- */
-
-
 struct AmusementGate {
     static func swipe(user: AccessibleAreas) -> Bool {
         for area in user.areaAccess {
@@ -268,6 +301,59 @@ struct AmusementGate {
                 return true
             }
         }
+        print("Denied access to amusement areas")
+        return false
+    }
+}
+
+
+struct KitchenGate {
+    static func swipe(user: AccessibleAreas) -> Bool {
+        for area in user.areaAccess {
+            if area == AreaAccess.kitchenAreas {
+                return true
+            }
+        }
+        print("Denied access to kitchen areas")
+        return false
+    }
+}
+
+
+struct RideControlGate {
+    static func swipe(user: AccessibleAreas) -> Bool {
+        for area in user.areaAccess {
+            if area == AreaAccess.rideControlAreas {
+                return true
+            }
+        }
+        print("Denied access to ride control areas")
+        return false
+    }
+}
+
+
+struct MaintenanceGate {
+    static func swipe(user: AccessibleAreas) -> Bool {
+        for area in user.areaAccess {
+            if area == AreaAccess.maintenanceAreas {
+                return true
+            }
+        }
+        print("Denied access to maintenance areas")
+        return false
+    }
+}
+
+
+struct OfficeGate {
+    static func swipe(user: AccessibleAreas) -> Bool {
+        for area in user.areaAccess {
+            if area == AreaAccess.officeAreas {
+                return true
+            }
+        }
+        print("Denied access to office areas")
         return false
     }
 }
@@ -289,20 +375,6 @@ func trying() {
 
 
     
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 
 
