@@ -16,9 +16,8 @@ protocol StaffInfo {
     var zipCode: String { get }
 }
 
-
-// Structs to represent different types of employees
-struct EmployeeFoodService: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
+// Base class for Employees
+class Employee: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
     var lastName: String
     var streetAddress: String
@@ -26,16 +25,13 @@ struct EmployeeFoodService: StaffInfo, AccessibleAreas, AccessibleRides, Discoun
     var state: String
     var zipCode: String
     
-    var areaAccess: [AreaAccess] = [.amusementAreas, .kitchenAreas]
+    var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
     
     var discountOnFood: Int = 15
     var discountOnMerchandise: Int = 25
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
-        
-        /* Ignore the repeated lines of code, I realize some refactoring is needed,
-         as I am repeating myself but for now I am just trying to make it work !!! */
         
         if firstName.isEmpty {
             throw InitializerError.missingFirstName
@@ -61,7 +57,49 @@ struct EmployeeFoodService: StaffInfo, AccessibleAreas, AccessibleRides, Discoun
 }
 
 
-struct EmployeeRideService : StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
+class FoodService: Employee {
+    // I am really confused at this point about calling a throwable initializer
+    // Is there any way to avoid repeating the following lines of code ?
+    // Do I have to always check for the variables to make sure they are not empty and repeat for all the subclasses ?
+    override init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+        
+        if firstName.isEmpty {
+            throw InitializerError.missingFirstName
+        } else if lastName.isEmpty {
+            throw InitializerError.missingLastName
+        } else if streetAddress.isEmpty {
+            throw InitializerError.missingStreetAddress
+        } else if city.isEmpty {
+            throw InitializerError.city
+        } else if state.isEmpty {
+            throw InitializerError.state
+        } else if zipCode.isEmpty {
+            throw InitializerError.zipCode
+        }
+        
+        self.firstName = firstName
+        self.lastName = lastName
+        self.streetAddress = streetAddress
+        self.city = city
+        self.state = state
+        self.zipCode = zipCode
+        
+        super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
+        // getting an error:  Call can throw but is not marked with 'try'
+        // if I add the try then I am gonna need a catch clause and
+        // again repaeting lots of code for all the subclasses
+        // How to do it properly and is there any way to avoid this ?
+    }
+    
+}
+
+
+
+
+// Commented out for simplicity
+/*
+
+class EmployeeRideService : StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var firstName: String
     var lastName: String
     var streetAddress: String
@@ -181,5 +219,4 @@ struct Manager: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     }
 }
 
-// Check out the delegates videos and how to use them
-// All the structs are doing the same thing so they might be possible to do with delegates
+*/

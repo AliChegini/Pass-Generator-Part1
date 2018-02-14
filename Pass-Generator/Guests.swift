@@ -6,24 +6,29 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-struct ClassicGuest: AccessibleAreas, AccessibleRides {
+
+class Guest: AccessibleAreas, AccessibleRides {
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
 }
 
+class ClassicGuest: Guest {
+    
+}
 
-struct VIPGuest: AccessibleAreas, AccessibleRides, DiscountAccess {
-    var areaAccess: [AreaAccess] = [.amusementAreas]
-    var rideAccess: [RideAccess] = [.accessAllRides, .skipAllRides]
+
+class VIPGuest: Guest, DiscountAccess {
     
     var discountOnFood: Int = 10
     var discountOnMerchandise: Int = 20
+    
+    override init() {
+        var rideAccess: [RideAccess] = [.accessAllRides, .skipAllRides]
+    }
 }
 
 
-struct FreeChildGuest: AccessibleAreas, AccessibleRides {
-    var areaAccess: [AreaAccess] = [.amusementAreas]
-    var rideAccess: [RideAccess] = [.accessAllRides]
+class ChildGuest: Guest {
     
     var dateOfBirth: Int?
     
@@ -35,4 +40,8 @@ struct FreeChildGuest: AccessibleAreas, AccessibleRides {
     }
     
 }
+
+
+
+
 
