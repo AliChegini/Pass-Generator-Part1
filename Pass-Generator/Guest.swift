@@ -23,7 +23,8 @@ class VIPGuest: Guest, DiscountAccess {
     var discountOnMerchandise: Int = 20
     
     override init() {
-        var rideAccess: [RideAccess] = [.accessAllRides, .skipAllRides]
+        super.init()
+        self.rideAccess = [.accessAllRides, .skipAllRides]
     }
 }
 
