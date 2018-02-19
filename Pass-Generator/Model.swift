@@ -59,7 +59,9 @@ enum EntrantType: String {
 }
 
 
-struct GuestPass {
+struct Pass {
+    var firstName: String?
+    var lastName: String?
     var passType: EntrantType
     var rideAccess: [RideAccess]
     var areaAccess: [AreaAccess]
@@ -67,7 +69,7 @@ struct GuestPass {
     var discountOnFood: Int?
     var discountOnMerchandise: Int?
     
-    init(passType: EntrantType, rideAccess: [RideAccess], areaAccess: [AreaAccess], dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+    init(firstName: String? = nil, lastName: String? = nil ,passType: EntrantType, rideAccess: [RideAccess], areaAccess: [AreaAccess], dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
         self.passType = passType
         self.rideAccess = rideAccess
         self.areaAccess = areaAccess
@@ -77,31 +79,31 @@ struct GuestPass {
     }
 }
 
-
-struct EmployeePass {
-    var firstName: String?
-    var lastName: String?
-    var passType: EntrantType
-    var rideAccess: [RideAccess]
-    var areaAccess: [AreaAccess]
-    var discountOnFood: Int?
-    var discountOnMerchandise: Int?
-}
-
 // struct should be changed to protocol somehow
 // TODO
 
 class CheckPoint {
     // generate the pass
-    static func generatePass(entrant: EntrantType) {
+    static func generatePass(entrant: EntrantType) -> Pass {
         switch entrant {
         case .ClassicGuest:
             let classicGuest = ClassicGuest()
-            var pass = GuestPass(passType: .ClassicGuest, rideAccess: classicGuest.rideAccess, areaAccess: classicGuest.areaAccess)
+            let pass = Pass(passType: .ClassicGuest, rideAccess: classicGuest.rideAccess, areaAccess: classicGuest.areaAccess)
+            return pass
             
         case .VIPGuest:
-            let classicGuest = ClassicGuest()
-            var pass = GuestPass(passType: .ClassicGuest, rideAccess: classicGuest.rideAccess, areaAccess: classicGuest.areaAccess)
+            let vipGuest = VIPGuest()
+            let pass = Pass(passType: .VIPGuest, rideAccess: vipGuest.rideAccess, areaAccess: vipGuest.areaAccess)
+            return pass
+            
+        case .ChildGuest:
+             do {
+                let childGuest = try ChildGuest(dateOfBirth: nil)
+                let pass = Pass(passType: .ChildGuest, rideAccess: childGuest.rideAccess, areaAccess: childGuest.areaAccess, dateOfBirth: childGuest.dateOfBirth)
+                return pass
+             } catch {
+                print(error)
+            }
             
         default: break
         }
