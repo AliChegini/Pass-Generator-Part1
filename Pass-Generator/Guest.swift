@@ -13,12 +13,13 @@ class Guest: AccessibleAreas, AccessibleRides {
 }
 
 class ClassicGuest: Guest {
-    
+    override init() {
+        super.init()
+    }
 }
 
 
 class VIPGuest: Guest, DiscountAccess {
-    
     var discountOnFood: Int = 10
     var discountOnMerchandise: Int = 20
     
@@ -30,7 +31,6 @@ class VIPGuest: Guest, DiscountAccess {
 
 
 class ChildGuest: Guest {
-    
     var dateOfBirth: Int?
     
     init(dateOfBirth: Int?) throws {
@@ -39,10 +39,5 @@ class ChildGuest: Guest {
         }
         self.dateOfBirth = dateOfBirth
     }
-    
 }
-
-
-
-
 

@@ -36,6 +36,7 @@ protocol AccessibleRides {
     var rideAccess: [RideAccess] { get }
 }
 
+
 // Enum for the errors
 enum InitializerError: Error {
     case missingDateOfBirth
@@ -47,21 +48,76 @@ enum InitializerError: Error {
     case zipCode
 }
 
+enum EntrantType: String {
+    case ClassicGuest
+    case VIPGuest
+    case ChildGuest
+    case FoodServiceEmployee
+    case RideServiceEmployee
+    case MaintenanceEmployee
+    case Manager
+}
 
 
-class Reader {
+struct GuestPass {
+    var passType: EntrantType
+    var rideAccess: [RideAccess]
+    var areaAccess: [AreaAccess]
+    var dateOfBirth: Int?
+    var discountOnFood: Int?
+    var discountOnMerchandise: Int?
     
-    enum Access {
-        case granted
-        case denied
+    init(passType: EntrantType, rideAccess: [RideAccess], areaAccess: [AreaAccess], dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+        self.passType = passType
+        self.rideAccess = rideAccess
+        self.areaAccess = areaAccess
+        self.dateOfBirth = dateOfBirth
+        self.discountOnFood = discountOnFood
+        self.discountOnMerchandise = discountOnMerchandise
+    }
+}
+
+
+struct EmployeePass {
+    var firstName: String?
+    var lastName: String?
+    var passType: EntrantType
+    var rideAccess: [RideAccess]
+    var areaAccess: [AreaAccess]
+    var discountOnFood: Int?
+    var discountOnMerchandise: Int?
+}
+
+// struct should be changed to protocol somehow
+// TODO
+
+class CheckPoint {
+    // generate the pass
+    static func generatePass(entrant: EntrantType) {
+        switch entrant {
+        case .ClassicGuest:
+            let classicGuest = ClassicGuest()
+            var pass = GuestPass(passType: .ClassicGuest, rideAccess: classicGuest.rideAccess, areaAccess: classicGuest.areaAccess)
+            
+        case .VIPGuest:
+            let classicGuest = ClassicGuest()
+            var pass = GuestPass(passType: .ClassicGuest, rideAccess: classicGuest.rideAccess, areaAccess: classicGuest.areaAccess)
+            
+        default: break
+        }
+        
     }
     
-    static func swipe(entrant: AccessibleAreas) -> Bool {
+    
+    
+    
+    
+    
+    
+    
+    /*
+    static func check(entrant: AccessibleAreas) -> Bool {
         var accessGranted: Bool = false
-        // I need to compare the entrant area access with the gate name but I dont know how.
-        // Just to give a representation of what I want to do
-        // How to tell the swipe method which gate is calling it.
-        
         for area in entrant.areaAccess {
             switch area {
             case .amusementAreas:
@@ -79,6 +135,8 @@ class Reader {
         }
         return accessGranted
     }
+    */
+    
 }
 
 
