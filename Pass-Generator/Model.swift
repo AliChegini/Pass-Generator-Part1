@@ -48,75 +48,8 @@ enum InitializerError: Error {
     case zipCode
 }
 
-enum EntrantType: String {
-    case ClassicGuest
-    case VIPGuest
-    case ChildGuest
-    case FoodServiceEmployee
-    case RideServiceEmployee
-    case MaintenanceEmployee
-    case Manager
-}
 
 
-struct Pass {
-    var firstName: String?
-    var lastName: String?
-    var passType: EntrantType
-    var rideAccess: [RideAccess]
-    var areaAccess: [AreaAccess]
-    var dateOfBirth: Int?
-    var discountOnFood: Int?
-    var discountOnMerchandise: Int?
-    
-    init(firstName: String? = nil, lastName: String? = nil ,passType: EntrantType, rideAccess: [RideAccess], areaAccess: [AreaAccess], dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
-        self.passType = passType
-        self.rideAccess = rideAccess
-        self.areaAccess = areaAccess
-        self.dateOfBirth = dateOfBirth
-        self.discountOnFood = discountOnFood
-        self.discountOnMerchandise = discountOnMerchandise
-    }
-}
-
-// struct should be changed to protocol somehow
-// TODO
-
-class CheckPoint {
-    // generate the pass
-    static func generatePass(entrant: EntrantType) -> Pass {
-        switch entrant {
-        case .ClassicGuest:
-            let classicGuest = ClassicGuest()
-            let pass = Pass(passType: .ClassicGuest, rideAccess: classicGuest.rideAccess, areaAccess: classicGuest.areaAccess)
-            return pass
-            
-        case .VIPGuest:
-            let vipGuest = VIPGuest()
-            let pass = Pass(passType: .VIPGuest, rideAccess: vipGuest.rideAccess, areaAccess: vipGuest.areaAccess)
-            return pass
-            
-        case .ChildGuest:
-             do {
-                let childGuest = try ChildGuest(dateOfBirth: nil)
-                let pass = Pass(passType: .ChildGuest, rideAccess: childGuest.rideAccess, areaAccess: childGuest.areaAccess, dateOfBirth: childGuest.dateOfBirth)
-                return pass
-             } catch {
-                print(error)
-            }
-            
-        default: break
-        }
-        
-    }
-    
-    
-    
-    
-    
-    
-    
-    
     /*
     static func check(entrant: AccessibleAreas) -> Bool {
         var accessGranted: Bool = false
@@ -138,9 +71,6 @@ class CheckPoint {
         return accessGranted
     }
     */
-    
-}
-
 
 
 // This is another attempt to create 5 different gates
