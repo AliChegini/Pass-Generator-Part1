@@ -23,8 +23,8 @@ enum RideAccess {
 
 
 protocol DiscountAccess {
-    var discountOnFood: Int { get set }
-    var discountOnMerchandise: Int { get set }
+    var discountOnFood: Int? { get set }
+    var discountOnMerchandise: Int? { get set }
 }
 
 
@@ -143,11 +143,13 @@ struct OfficeGate {
     }
 }
 
+ 
 
 func trying() {
     
     let guest = ClassicGuest()
-    print(AmusementGate.swipe(user: guest))
+    print(CheckPoint.generatePass(entrant: guest )
+ 
     /*
     do {
         let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "ab", city: "new york", state: "DC", zipCode: "1234")
@@ -158,8 +160,7 @@ func trying() {
     */
 }
 
-
-    
 */
+
 
 

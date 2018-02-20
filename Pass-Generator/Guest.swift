@@ -20,8 +20,8 @@ class ClassicGuest: Guest {
 
 
 class VIPGuest: Guest, DiscountAccess {
-    var discountOnFood: Int = 10
-    var discountOnMerchandise: Int = 20
+    var discountOnFood: Int? = 10
+    var discountOnMerchandise: Int? = 20
     
     override init() {
         super.init()

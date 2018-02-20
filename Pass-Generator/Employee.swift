@@ -8,12 +8,12 @@
 
 // Protocol for Staff info
 protocol StaffInfo {
-    var firstName: String { get }
-    var lastName: String { get }
-    var streetAddress: String { get }
-    var city: String { get }
-    var state: String { get }
-    var zipCode: String { get }
+    var firstName: String { get set }
+    var lastName: String { get set }
+    var streetAddress: String { get set }
+    var city: String { get set }
+    var state: String { get set }
+    var zipCode: String { get set }
 }
 
 // Base class for Employees
@@ -28,8 +28,8 @@ class Employee: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
     
-    var discountOnFood: Int = 15
-    var discountOnMerchandise: Int = 25
+    var discountOnFood: Int? = 15
+    var discountOnMerchandise: Int? = 25
     
     init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
         
