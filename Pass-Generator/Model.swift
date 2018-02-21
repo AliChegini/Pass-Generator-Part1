@@ -49,6 +49,16 @@ enum InitializerError: Error {
 }
 
 
+// Protocol for Staff info
+protocol StaffInfo {
+    var firstName: String? { get set }
+    var lastName: String? { get set }
+    var streetAddress: String? { get set }
+    var city: String? { get set }
+    var state: String? { get set }
+    var zipCode: String? { get set }
+}
+
 
     /*
     static func check(entrant: AccessibleAreas) -> Bool {
@@ -143,24 +153,18 @@ struct OfficeGate {
     }
 }
 
- 
+*/
+
+
 
 func trying() {
     
     let guest = ClassicGuest()
-    print(CheckPoint.generatePass(entrant: guest )
+    print(CheckPoint.generatePass(entrant: guest))
  
-    /*
-    do {
-        let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "ab", city: "new york", state: "DC", zipCode: "1234")
-        print(AmusementGate.swipe(user: manager))
-    } catch {
-        print("Error")
-    }
-    */
 }
 
-*/
+
 
 
 

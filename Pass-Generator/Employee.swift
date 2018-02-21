@@ -6,64 +6,60 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-// Protocol for Staff info
-protocol StaffInfo {
-    var firstName: String { get set }
-    var lastName: String { get set }
-    var streetAddress: String { get set }
-    var city: String { get set }
-    var state: String { get set }
-    var zipCode: String { get set }
-}
 
 // Base class for Employees
-class Employee: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
-    var firstName: String
-    var lastName: String
-    var streetAddress: String
-    var city: String
-    var state: String
-    var zipCode: String
-    
+class Employee: Entrant {
+    var firstName: String?
+    var lastName: String?
+    var streetAddress: String?
+    var city: String?
+    var state: String?
+    var zipCode: String?
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
-    
     var discountOnFood: Int? = 15
     var discountOnMerchandise: Int? = 25
+    var entrantType: EntrantType?
+    var dateOfBirth: Int?
     
-    init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+    init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
         
-        if firstName.isEmpty {
+        guard let firstNameUnwrapped = firstName else {
             throw InitializerError.missingFirstName
         }
-        if lastName.isEmpty {
+        
+        guard let lastNameUnwrapped = lastName else {
             throw InitializerError.missingLastName
         }
-        if streetAddress.isEmpty {
+        
+        guard let streetAddressUnwrapped = streetAddress else {
             throw InitializerError.missingStreetAddress
         }
-        if city.isEmpty {
+        
+        guard let cityUnwrapped = city else {
             throw InitializerError.city
         }
-        if state.isEmpty {
+        
+        guard let stateUnwrapped = state else {
             throw InitializerError.state
         }
-        if zipCode.isEmpty {
+        
+        guard let zipCodeUnwrapped = zipCode else {
             throw InitializerError.zipCode
         }
-        
-        self.firstName = firstName
-        self.lastName = lastName
-        self.streetAddress = streetAddress
-        self.city = city
-        self.state = state
-        self.zipCode = zipCode
+       
+        self.firstName = firstNameUnwrapped
+        self.lastName = lastNameUnwrapped
+        self.streetAddress = streetAddressUnwrapped
+        self.city = cityUnwrapped
+        self.state = stateUnwrapped
+        self.zipCode = zipCodeUnwrapped
     }
 }
 
 
 class FoodServiceEmployee: Employee {
-    override init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
         try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
         self.areaAccess = [.amusementAreas, .kitchenAreas]
     }
@@ -71,7 +67,7 @@ class FoodServiceEmployee: Employee {
 
 
 class RideServiceEmployee : Employee {
-    override init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
         try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
         self.areaAccess = [.amusementAreas, .rideControlAreas]
     }
@@ -79,7 +75,7 @@ class RideServiceEmployee : Employee {
 
 
 class MaintenanceEmployee: Employee {
-    override init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
         try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
         self.areaAccess = [.amusementAreas, .kitchenAreas, .rideControlAreas, .maintenanceAreas]
     }
@@ -87,7 +83,7 @@ class MaintenanceEmployee: Employee {
 
 
 class Manager: Employee {
-    override init(firstName: String, lastName: String, streetAddress: String, city: String, state: String, zipCode: String) throws {
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
         try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
         self.areaAccess = [.amusementAreas, .kitchenAreas, .rideControlAreas, .maintenanceAreas, .officeAreas]
         self.discountOnFood = 25
