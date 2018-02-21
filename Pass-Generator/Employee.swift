@@ -19,10 +19,10 @@ class Employee: Entrant {
     var rideAccess: [RideAccess] = [.accessAllRides]
     var discountOnFood: Int? = 15
     var discountOnMerchandise: Int? = 25
-    var entrantType: EntrantType?
+    var entrantType: EntrantType
     var dateOfBirth: Int?
     
-    init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
+    init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?, entrantType: EntrantType) throws {
         
         guard let firstNameUnwrapped = firstName else {
             throw InitializerError.missingFirstName
@@ -54,37 +54,38 @@ class Employee: Entrant {
         self.city = cityUnwrapped
         self.state = stateUnwrapped
         self.zipCode = zipCodeUnwrapped
+        self.entrantType = entrantType
     }
 }
 
 
 class FoodServiceEmployee: Employee {
-    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
-        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?, entrantType: EntrantType = .FoodServiceEmployee) throws {
+        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode, entrantType: entrantType)
         self.areaAccess = [.amusementAreas, .kitchenAreas]
     }
 }
 
 
 class RideServiceEmployee : Employee {
-    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
-        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?, entrantType: EntrantType = .RideServiceEmployee) throws {
+        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode, entrantType: entrantType)
         self.areaAccess = [.amusementAreas, .rideControlAreas]
     }
 }
 
 
 class MaintenanceEmployee: Employee {
-    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
-        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?, entrantType: EntrantType = .MaintenanceEmployee) throws {
+        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode, entrantType: entrantType)
         self.areaAccess = [.amusementAreas, .kitchenAreas, .rideControlAreas, .maintenanceAreas]
     }
 }
 
 
 class Manager: Employee {
-    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?) throws {
-        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode)
+    override init(firstName: String?, lastName: String?, streetAddress: String?, city: String?, state: String?, zipCode: String?, entrantType: EntrantType = .Manager) throws {
+        try super.init(firstName: firstName, lastName: lastName, streetAddress: streetAddress, city: city, state: state, zipCode: zipCode, entrantType: entrantType)
         self.areaAccess = [.amusementAreas, .kitchenAreas, .rideControlAreas, .maintenanceAreas, .officeAreas]
         self.discountOnFood = 25
         self.discountOnMerchandise = 25

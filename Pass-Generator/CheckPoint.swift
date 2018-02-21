@@ -62,25 +62,25 @@ struct Pass: Entrant {
 class CheckPoint {
     
     // Static function to generate passes
-    static func generatePassFor(entrant: Entrant, of type: EntrantTypeProtocol) -> Pass {
+    static func generatePass(entrant: Entrant) -> Pass {
         // initialize a pass with dummy data
         var finalPass = Pass(entrantType: entrant.entrantType)
         
         switch entrant.entrantType {
         case .ClassicGuest:
             let classicGuest = ClassicGuest()
-            let pass = Pass(entrantType: .ClassicGuest)
+            let pass = Pass(entrantType: classicGuest.entrantType)
             finalPass = pass
             
         case .VIPGuest:
             let vipGuest = VIPGuest()
-            let pass = Pass(entrantType: .VIPGuest)
+            let pass = Pass(entrantType: vipGuest.entrantType)
             finalPass = pass
             
         case .ChildGuest:
             do {
-                let childGuest = try ChildGuest(dateOfBirth: nil)
-                let pass = Pass(entrantType: .ChildGuest)
+                let childGuest = try ChildGuest(dateOfBirth: entrant.dateOfBirth, entrantType: entrant.entrantType)
+                let pass = Pass(entrantType: childGuest.entrantType)
                 finalPass = pass
             } catch {
                 print(error)
@@ -88,8 +88,8 @@ class CheckPoint {
             
         case .FoodServiceEmployee:
             do {
-                let foodServiceEmployee = try FoodServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode)
-                let pass = Pass(firstName: foodServiceEmployee.firstName, lastName: foodServiceEmployee.lastName, entrantType: .FoodServiceEmployee)
+                let foodServiceEmployee = try FoodServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let pass = Pass(firstName: foodServiceEmployee.firstName, lastName: foodServiceEmployee.lastName, entrantType: foodServiceEmployee.entrantType)
                 finalPass = pass
             } catch {
                 print(error)
@@ -97,8 +97,8 @@ class CheckPoint {
             
         case .RideServiceEmployee:
             do {
-                let rideServiceEmployee = try RideServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode)
-                let pass = Pass(firstName: rideServiceEmployee.firstName, lastName: rideServiceEmployee.lastName, entrantType: .RideServiceEmployee)
+                let rideServiceEmployee = try RideServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let pass = Pass(firstName: rideServiceEmployee.firstName, lastName: rideServiceEmployee.lastName, entrantType: rideServiceEmployee.entrantType)
                 finalPass = pass
             } catch {
                 print(error)
@@ -106,8 +106,8 @@ class CheckPoint {
             
         case .MaintenanceEmployee:
             do {
-                let maintenanceEmployee = try MaintenanceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode)
-                let pass = Pass(firstName: maintenanceEmployee.firstName, lastName: maintenanceEmployee.lastName, entrantType: .MaintenanceEmployee)
+                let maintenanceEmployee = try MaintenanceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let pass = Pass(firstName: maintenanceEmployee.firstName, lastName: maintenanceEmployee.lastName, entrantType: maintenanceEmployee.entrantType)
                 finalPass = pass
             } catch {
                 print(error)
@@ -115,8 +115,8 @@ class CheckPoint {
             
         case .Manager:
             do {
-                let manager = try Manager(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode)
-                let pass = Pass(firstName: manager.firstName, lastName: manager.lastName, entrantType: .Manager)
+                let manager = try Manager(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let pass = Pass(firstName: manager.firstName, lastName: manager.lastName, entrantType: manager.entrantType)
                 finalPass = pass
             } catch {
                 print(error)

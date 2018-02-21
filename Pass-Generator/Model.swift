@@ -159,9 +159,16 @@ struct OfficeGate {
 
 func trying() {
     
-    let guest = ClassicGuest()
-    print(CheckPoint.generatePass(entrant: guest))
- 
+    let classicGuest = ClassicGuest()
+    print("Classic Guest Pass: ", CheckPoint.generatePass(entrant: classicGuest))
+    
+    do {
+        let foodServiceEmployee = try FoodServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Food Service Employee Pass: ", CheckPoint.generatePass(entrant: foodServiceEmployee))
+    } catch {
+        print(error)
+    }
+
 }
 
 

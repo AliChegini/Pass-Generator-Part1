@@ -14,14 +14,14 @@ class Guest: Entrant {
     var city: String?
     var state: String?
     var zipCode: String?
-    var entrantType: EntrantType?
+    var entrantType: EntrantType
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
     var dateOfBirth: Int?
     var discountOnFood: Int?
     var discountOnMerchandise: Int?
     
-    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType? = nil, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
@@ -37,16 +37,16 @@ class Guest: Entrant {
 }
 
 class ClassicGuest: Guest {
-    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType? = nil, dateOfBirth: Int? = nil, discountOnFood: Int?  = nil, discountOnMerchandise: Int? = nil) {
-        super.init()
+    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType = .ClassicGuest, dateOfBirth: Int? = nil, discountOnFood: Int?  = nil, discountOnMerchandise: Int? = nil) {
+        super.init(entrantType: entrantType)
     }
 }
 
 
 class VIPGuest: Guest {
 
-    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType? = nil, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
-        super.init()
+    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType = .VIPGuest, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+        super.init(entrantType: entrantType)
         self.rideAccess = [.accessAllRides, .skipAllRides]
         self.discountOnFood = 10
         self.discountOnMerchandise = 20
@@ -56,12 +56,12 @@ class VIPGuest: Guest {
 
 class ChildGuest: Guest {
     
-    init(dateOfBirth: Int?) throws {
-        super.init()
-        if dateOfBirth == nil {
+    init(dateOfBirth: Int?, entrantType: EntrantType = .ChildGuest) throws {
+        super.init(entrantType: entrantType)
+        guard let dateOfBirthUnwrapped = dateOfBirth else {
             throw InitializerError.missingDateOfBirth
         }
-        self.dateOfBirth = dateOfBirth
+        self.dateOfBirth = dateOfBirthUnwrapped
     }
 }
 
