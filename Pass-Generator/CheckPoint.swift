@@ -16,14 +16,10 @@ enum EntrantType: String {
     case Manager
 }
 
-protocol EntrantTypeProtocol {
-    var entrantType: EntrantType { get set }
-}
-
-
-// Protocol to make a new custom type for passes
+// Protocol to make a custom type Entrant for all the passes
 // Entrant is a protocol which requires all the details
-protocol Entrant: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess, EntrantTypeProtocol {
+protocol Entrant: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
+    var entrantType: EntrantType { get set }
     var dateOfBirth: Int? { get set }
 }
 
@@ -37,8 +33,8 @@ struct Pass: Entrant {
     var state: String?
     var zipCode: String?
     var entrantType: EntrantType
-    var rideAccess: [RideAccess] = [.accessAllRides]
-    var areaAccess: [AreaAccess] = [.amusementAreas]
+    var rideAccess: [RideAccess] = []
+    var areaAccess: [AreaAccess] = []
     var dateOfBirth: Int?
     var discountOnFood: Int?
     var discountOnMerchandise: Int?
@@ -69,18 +65,27 @@ class CheckPoint {
         switch entrant.entrantType {
         case .ClassicGuest:
             let classicGuest = ClassicGuest()
-            let pass = Pass(entrantType: classicGuest.entrantType)
+            var pass = Pass(entrantType: classicGuest.entrantType)
+            pass.rideAccess = classicGuest.rideAccess
+            pass.areaAccess = classicGuest.areaAccess
+            
             finalPass = pass
             
         case .VIPGuest:
             let vipGuest = VIPGuest()
-            let pass = Pass(entrantType: vipGuest.entrantType)
+            var pass = Pass(entrantType: vipGuest.entrantType)
+            pass.rideAccess = vipGuest.rideAccess
+            pass.areaAccess = vipGuest.areaAccess
+            
             finalPass = pass
             
         case .ChildGuest:
             do {
                 let childGuest = try ChildGuest(dateOfBirth: entrant.dateOfBirth, entrantType: entrant.entrantType)
-                let pass = Pass(entrantType: childGuest.entrantType)
+                var pass = Pass(entrantType: childGuest.entrantType)
+                pass.rideAccess = childGuest.rideAccess
+                pass.areaAccess = childGuest.areaAccess
+                
                 finalPass = pass
             } catch {
                 print(error)
@@ -89,7 +94,10 @@ class CheckPoint {
         case .FoodServiceEmployee:
             do {
                 let foodServiceEmployee = try FoodServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
-                let pass = Pass(firstName: foodServiceEmployee.firstName, lastName: foodServiceEmployee.lastName, entrantType: foodServiceEmployee.entrantType)
+                var pass = Pass(firstName: foodServiceEmployee.firstName, lastName: foodServiceEmployee.lastName, entrantType: foodServiceEmployee.entrantType)
+                pass.rideAccess = foodServiceEmployee.rideAccess
+                pass.areaAccess = foodServiceEmployee.areaAccess
+                
                 finalPass = pass
             } catch {
                 print(error)
@@ -98,7 +106,10 @@ class CheckPoint {
         case .RideServiceEmployee:
             do {
                 let rideServiceEmployee = try RideServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
-                let pass = Pass(firstName: rideServiceEmployee.firstName, lastName: rideServiceEmployee.lastName, entrantType: rideServiceEmployee.entrantType)
+                var pass = Pass(firstName: rideServiceEmployee.firstName, lastName: rideServiceEmployee.lastName, entrantType: rideServiceEmployee.entrantType)
+                pass.rideAccess = rideServiceEmployee.rideAccess
+                pass.areaAccess = rideServiceEmployee.areaAccess
+                
                 finalPass = pass
             } catch {
                 print(error)
@@ -107,7 +118,10 @@ class CheckPoint {
         case .MaintenanceEmployee:
             do {
                 let maintenanceEmployee = try MaintenanceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
-                let pass = Pass(firstName: maintenanceEmployee.firstName, lastName: maintenanceEmployee.lastName, entrantType: maintenanceEmployee.entrantType)
+                var pass = Pass(firstName: maintenanceEmployee.firstName, lastName: maintenanceEmployee.lastName, entrantType: maintenanceEmployee.entrantType)
+                pass.rideAccess = maintenanceEmployee.rideAccess
+                pass.areaAccess = maintenanceEmployee.areaAccess
+                
                 finalPass = pass
             } catch {
                 print(error)
@@ -116,7 +130,10 @@ class CheckPoint {
         case .Manager:
             do {
                 let manager = try Manager(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
-                let pass = Pass(firstName: manager.firstName, lastName: manager.lastName, entrantType: manager.entrantType)
+                var pass = Pass(firstName: manager.firstName, lastName: manager.lastName, entrantType: manager.entrantType)
+                pass.rideAccess = manager.rideAccess
+                pass.areaAccess = manager.areaAccess
+                
                 finalPass = pass
             } catch {
                 print(error)
@@ -124,6 +141,17 @@ class CheckPoint {
         }
         return finalPass
     }
+    
+    
+    // Static function to validate the pass and allow entry to areas
+    static func validate(pass: Pass, at gate: AreaAccess) {
+        if pass.areaAccess.contains(gate) {
+            print("Allowed entry to \(gate)")
+        } else {
+            print("Denied entry to \(gate)")
+        }
+    }
+
 }
 
 
