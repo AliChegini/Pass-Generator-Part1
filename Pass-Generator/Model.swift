@@ -6,8 +6,7 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-import Foundation
-
+// All the enums and protocols are defined in this file
 enum AreaAccess: String {
     case amusementAreas
     case kitchenAreas
@@ -16,24 +15,10 @@ enum AreaAccess: String {
     case officeAreas
 }
 
+
 enum RideAccess {
     case accessAllRides
     case skipAllRides
-}
-
-
-protocol DiscountAccess {
-    var discountOnFood: Int? { get set }
-    var discountOnMerchandise: Int? { get set }
-}
-
-
-protocol AccessibleAreas {
-    var areaAccess: [AreaAccess] { get }
-}
-
-protocol AccessibleRides {
-    var rideAccess: [RideAccess] { get }
 }
 
 
@@ -58,3 +43,56 @@ protocol StaffInfo {
     var state: String? { get set }
     var zipCode: String? { get set }
 }
+
+
+enum EntrantType: String {
+    case ClassicGuest
+    case VIPGuest
+    case ChildGuest
+    case FoodServiceEmployee
+    case RideServiceEmployee
+    case MaintenanceEmployee
+    case Manager
+}
+
+// Protocol to make a custom type Entrant
+// Entrant is a protocol which requires all the properties
+protocol Entrant: StaffInfo {
+    var areaAccess: [AreaAccess] { get set }
+    var rideAccess: [RideAccess] { get set }
+    var entrantType: EntrantType { get set }
+    var dateOfBirth: Int? { get set }
+    var discountOnFood: Int? { get set }
+    var discountOnMerchandise: Int? { get set }
+}
+
+
+// Struct to hold pass
+struct Pass: Entrant {
+    var firstName: String?
+    var lastName: String?
+    var streetAddress: String?
+    var city: String?
+    var state: String?
+    var zipCode: String?
+    var entrantType: EntrantType
+    var rideAccess: [RideAccess] = []
+    var areaAccess: [AreaAccess] = []
+    var dateOfBirth: Int?
+    var discountOnFood: Int?
+    var discountOnMerchandise: Int?
+    
+    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.streetAddress = streetAddress
+        self.city = city
+        self.state = state
+        self.zipCode = zipCode
+        self.entrantType = entrantType
+        self.dateOfBirth = dateOfBirth
+        self.discountOnFood = discountOnFood
+        self.discountOnMerchandise = discountOnMerchandise
+    }
+}
+

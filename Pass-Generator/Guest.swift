@@ -6,7 +6,6 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-
 class Guest: Entrant {
     var firstName: String?
     var lastName: String?

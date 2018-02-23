@@ -6,65 +6,23 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-enum EntrantType: String {
-    case ClassicGuest
-    case VIPGuest
-    case ChildGuest
-    case FoodServiceEmployee
-    case RideServiceEmployee
-    case MaintenanceEmployee
-    case Manager
-}
-
-// Protocol to make a custom type Entrant for all the passes
-// Entrant is a protocol which requires all the details
-protocol Entrant: StaffInfo, AccessibleAreas, AccessibleRides, DiscountAccess {
-    var entrantType: EntrantType { get set }
-    var dateOfBirth: Int? { get set }
-}
-
-
-// Struct to hold pass
-struct Pass: Entrant {
-    var firstName: String?
-    var lastName: String?
-    var streetAddress: String?
-    var city: String?
-    var state: String?
-    var zipCode: String?
-    var entrantType: EntrantType
-    var rideAccess: [RideAccess] = []
-    var areaAccess: [AreaAccess] = []
-    var dateOfBirth: Int?
-    var discountOnFood: Int?
-    var discountOnMerchandise: Int?
-    
-    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
-        self.firstName = firstName
-        self.lastName = lastName
-        self.streetAddress = streetAddress
-        self.city = city
-        self.state = state
-        self.zipCode = zipCode
-        self.entrantType = entrantType
-        self.dateOfBirth = dateOfBirth
-        self.discountOnFood = discountOnFood
-        self.discountOnMerchandise = discountOnMerchandise
-    }
-}
-
 
 // Class to implement the logic for check point
+// Each check point can generate new pass,
+// and also check the generated pass from other gates
 class CheckPoint {
     
     // Static function to generate passes
+    // Method takes an Entrant and return a Pass
     static func generatePass(entrant: Entrant) -> Pass {
-        // initialize a pass with dummy data
+        // finalPass will be assigned with a pass to be returned
         var finalPass = Pass(entrantType: entrant.entrantType)
         
         switch entrant.entrantType {
         case .ClassicGuest:
+            // Creating an instance of ClassicGuest
             let classicGuest = ClassicGuest()
+            // Using the instance properties of ClassicGuest to create a pass
             var pass = Pass(entrantType: classicGuest.entrantType)
             pass.rideAccess = classicGuest.rideAccess
             pass.areaAccess = classicGuest.areaAccess
@@ -93,7 +51,9 @@ class CheckPoint {
             
         case .FoodServiceEmployee:
             do {
+                // Creating an instance of FoodServiceEmployee
                 let foodServiceEmployee = try FoodServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                // Using the instance properties of foodServiceEmployee to create a pass
                 var pass = Pass(firstName: foodServiceEmployee.firstName, lastName: foodServiceEmployee.lastName, entrantType: foodServiceEmployee.entrantType)
                 pass.rideAccess = foodServiceEmployee.rideAccess
                 pass.areaAccess = foodServiceEmployee.areaAccess
@@ -143,12 +103,13 @@ class CheckPoint {
     }
     
     
-    // Static function to validate the pass and allow entry to areas
-    static func validate(pass: Pass, at gate: AreaAccess) {
-        if pass.areaAccess.contains(gate) {
-            print("Allowed entry to \(gate)")
+    // Static function to check the pass and allow entry to areas
+    // Equivalent to Swipe method
+    static func checkPassForAreaAccess(pass: Pass, to area: AreaAccess) {
+        if pass.areaAccess.contains(area) {
+            print("\(pass.entrantType) --- Allowed entry to \(area)")
         } else {
-            print("Denied entry to \(gate)")
+            print("\(pass.entrantType) --- Denied entry to \(area)")
         }
     }
 

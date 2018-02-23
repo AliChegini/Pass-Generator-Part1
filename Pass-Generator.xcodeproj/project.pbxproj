@@ -64,13 +64,13 @@
 		7C1ECC50200E588000A1F242 /* Pass-Generator */ = {
 			isa = PBXGroup;
 			children = (
-				7C8CB011203E722D00B3B800 /* TestCases.swift */,
 				7C1ECC51200E588000A1F242 /* AppDelegate.swift */,
 				7C1ECC53200E588000A1F242 /* ViewController.swift */,
 				7C348FBD20109AD500C65CE8 /* Model.swift */,
 				7CF46CB4203BA6D600876429 /* CheckPoint.swift */,
 				7C75073B2030121D00F70725 /* Guest.swift */,
 				7C75073D2030128D00F70725 /* Employee.swift */,
+				7C8CB011203E722D00B3B800 /* TestCases.swift */,
 				7C1ECC55200E588000A1F242 /* Main.storyboard */,
 				7C1ECC58200E588000A1F242 /* Assets.xcassets */,
 				7C1ECC5A200E588000A1F242 /* LaunchScreen.storyboard */,

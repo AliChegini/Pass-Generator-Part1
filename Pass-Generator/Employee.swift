@@ -15,8 +15,8 @@ class Employee: Entrant {
     var city: String?
     var state: String?
     var zipCode: String?
-    var areaAccess: [AreaAccess] = [.amusementAreas]
-    var rideAccess: [RideAccess] = [.accessAllRides]
+    var areaAccess: [AreaAccess] = []
+    var rideAccess: [RideAccess] = []
     var discountOnFood: Int? = 15
     var discountOnMerchandise: Int? = 25
     var entrantType: EntrantType
