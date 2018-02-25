@@ -6,6 +6,8 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
+
+
 // All the enums and protocols are defined in this file
 enum AreaAccess: String {
     case amusementAreas
@@ -28,22 +30,10 @@ enum InitializerError: Error {
     case missingFirstName
     case missingLastName
     case missingStreetAddress
-    case city
-    case state
-    case zipCode
+    case missingCity
+    case missingState
+    case missingZipCode
 }
-
-
-// Protocol for Staff info
-protocol StaffInfo {
-    var firstName: String? { get set }
-    var lastName: String? { get set }
-    var streetAddress: String? { get set }
-    var city: String? { get set }
-    var state: String? { get set }
-    var zipCode: String? { get set }
-}
-
 
 enum EntrantType: String {
     case ClassicGuest
@@ -53,6 +43,16 @@ enum EntrantType: String {
     case RideServiceEmployee
     case MaintenanceEmployee
     case Manager
+}
+
+// Protocol for Staff info
+protocol StaffInfo {
+    var firstName: String? { get set }
+    var lastName: String? { get set }
+    var streetAddress: String? { get set }
+    var city: String? { get set }
+    var state: String? { get set }
+    var zipCode: String? { get set }
 }
 
 // Protocol to make a custom type Entrant
@@ -67,7 +67,7 @@ protocol Entrant: StaffInfo {
 }
 
 
-// Struct to hold pass
+// Struct to hold uniform passes
 struct Pass: Entrant {
     var firstName: String?
     var lastName: String?

@@ -37,15 +37,15 @@ class Employee: Entrant {
         }
         
         guard let cityUnwrapped = city else {
-            throw InitializerError.city
+            throw InitializerError.missingCity
         }
         
         guard let stateUnwrapped = state else {
-            throw InitializerError.state
+            throw InitializerError.missingState
         }
         
         guard let zipCodeUnwrapped = zipCode else {
-            throw InitializerError.zipCode
+            throw InitializerError.missingZipCode
         }
        
         self.firstName = firstNameUnwrapped

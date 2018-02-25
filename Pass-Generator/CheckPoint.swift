@@ -9,11 +9,12 @@
 
 // Class to implement the logic for check point
 // Each check point can generate new pass,
-// and also check the generated pass from other gates
+// and also check the generated pass from all other check points
 class CheckPoint {
     
     // Static function to generate passes
     // Method takes an Entrant and return a Pass
+    // This method can generate all type of passes
     static func generatePass(entrant: Entrant) -> Pass {
         // finalPass will be assigned with a pass to be returned
         var finalPass = Pass(entrantType: entrant.entrantType)
@@ -103,13 +104,19 @@ class CheckPoint {
     }
     
     
-    // Static function to check the pass and allow entry to areas
+    // Method to check the pass and allow entry to areas
     // Equivalent to Swipe method
+    // This method can handle all type of passes
     static func checkPassForAreaAccess(pass: Pass, to area: AreaAccess) {
         if pass.areaAccess.contains(area) {
             print("\(pass.entrantType) --- Allowed entry to \(area)")
         } else {
             print("\(pass.entrantType) --- Denied entry to \(area)")
+        }
+        
+        // Does not work yet
+        if pass.dateOfBirth != nil {
+            print("Happy birthday!")
         }
     }
 
