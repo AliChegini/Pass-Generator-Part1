@@ -6,6 +6,7 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
+import Foundation
 
 // Class to implement the logic for check point
 // Each check point can generate new pass,
@@ -41,7 +42,7 @@ class CheckPoint {
         case .ChildGuest:
             do {
                 let childGuest = try ChildGuest(dateOfBirth: entrant.dateOfBirth, entrantType: entrant.entrantType)
-                var pass = Pass(entrantType: childGuest.entrantType)
+                var pass = Pass(entrantType: childGuest.entrantType, dateOfBirth: entrant.dateOfBirth)
                 pass.rideAccess = childGuest.rideAccess
                 pass.areaAccess = childGuest.areaAccess
                 
@@ -53,7 +54,7 @@ class CheckPoint {
         case .FoodServiceEmployee:
             do {
                 // Creating an instance of FoodServiceEmployee
-                let foodServiceEmployee = try FoodServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let foodServiceEmployee = try FoodServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType, dateOfBirth: nil)
                 // Using the instance properties of foodServiceEmployee to create a pass
                 var pass = Pass(firstName: foodServiceEmployee.firstName, lastName: foodServiceEmployee.lastName, entrantType: foodServiceEmployee.entrantType)
                 pass.rideAccess = foodServiceEmployee.rideAccess
@@ -66,7 +67,7 @@ class CheckPoint {
             
         case .RideServiceEmployee:
             do {
-                let rideServiceEmployee = try RideServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let rideServiceEmployee = try RideServiceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType, dateOfBirth: nil)
                 var pass = Pass(firstName: rideServiceEmployee.firstName, lastName: rideServiceEmployee.lastName, entrantType: rideServiceEmployee.entrantType)
                 pass.rideAccess = rideServiceEmployee.rideAccess
                 pass.areaAccess = rideServiceEmployee.areaAccess
@@ -78,7 +79,7 @@ class CheckPoint {
             
         case .MaintenanceEmployee:
             do {
-                let maintenanceEmployee = try MaintenanceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let maintenanceEmployee = try MaintenanceEmployee(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType, dateOfBirth: nil)
                 var pass = Pass(firstName: maintenanceEmployee.firstName, lastName: maintenanceEmployee.lastName, entrantType: maintenanceEmployee.entrantType)
                 pass.rideAccess = maintenanceEmployee.rideAccess
                 pass.areaAccess = maintenanceEmployee.areaAccess
@@ -90,7 +91,7 @@ class CheckPoint {
             
         case .Manager:
             do {
-                let manager = try Manager(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType)
+                let manager = try Manager(firstName: entrant.firstName, lastName: entrant.lastName, streetAddress: entrant.streetAddress, city: entrant.city, state: entrant.state, zipCode: entrant.zipCode, entrantType: entrant.entrantType, dateOfBirth: nil)
                 var pass = Pass(firstName: manager.firstName, lastName: manager.lastName, entrantType: manager.entrantType)
                 pass.rideAccess = manager.rideAccess
                 pass.areaAccess = manager.areaAccess
@@ -110,14 +111,27 @@ class CheckPoint {
     static func checkPassForAreaAccess(pass: Pass, to area: AreaAccess) {
         if pass.areaAccess.contains(area) {
             print("\(pass.entrantType) --- Allowed entry to \(area)")
+            if pass.dateOfBirth != nil {
+                
+                let today = Date()
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd.MM.yy"
+                let formattedDateOfBirth = formatter.string(from: pass.dateOfBirth!)
+                let formattedToday = formatter.string(from: today)
+                
+                // first 5 characters are needed to check the birthday with the format defined above
+                if formattedDateOfBirth.prefix(5) == formattedToday.prefix(5) {
+                    if let firstNameUnwrapped = pass.firstName {
+                        print("Happy Birthday Dear \(firstNameUnwrapped)")
+                    } else {
+                        print("Happy Birthday Dear \(pass.entrantType)")
+                    }
+                }
+            }
         } else {
             print("\(pass.entrantType) --- Denied entry to \(area)")
         }
         
-        // Does not work yet
-        if pass.dateOfBirth != nil {
-            print("Happy birthday!")
-        }
     }
 
 }

@@ -6,11 +6,17 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-
+import Foundation
 
 // By running the app, the test method will be called from ViewController,
 // and all the test cases will be executed
 func test() {
+    
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd.MM.yy"
+    let someDate = formatter.date(from: "21.04.98")
+    
+    
     
     // success case for classic guest entering amusement areas -- allowed
     print("Test case 1 ...")
@@ -37,9 +43,24 @@ func test() {
     
     
     // success case for child guest entering amusement areas -- allowed
+    // Date of birth is set to today so the birthday message shows up
     do {
         print("Test case 4 ...")
-        let childGuest =  try ChildGuest(dateOfBirth: 1212005)
+        let childGuest =  try ChildGuest(dateOfBirth: Date())
+        let childPass = CheckPoint.generatePass(entrant: childGuest)
+        CheckPoint.checkPassForAreaAccess(pass: childPass, to: .amusementAreas)
+        print("--- ")
+    } catch {
+        print("Error: \(error)")
+        print("--- ")
+    }
+    
+    
+    // success case for child guest entering amusement areas -- allowed
+    // Date of birth is set to some date so birthday message does not show up
+    do {
+        print("Test case 5 ...")
+        let childGuest =  try ChildGuest(dateOfBirth: someDate)
         let childPass = CheckPoint.generatePass(entrant: childGuest)
         CheckPoint.checkPassForAreaAccess(pass: childPass, to: .amusementAreas)
         print("--- ")
@@ -51,7 +72,7 @@ func test() {
     
     // fail case for child guest missing date of birth --- Error handled
     do {
-        print("Test case 5 ...")
+        print("Test case 6 ...")
         let childGuest =  try ChildGuest(dateOfBirth: nil)
         let childPass = CheckPoint.generatePass(entrant: childGuest)
         CheckPoint.checkPassForAreaAccess(pass: childPass, to: .amusementAreas)
@@ -64,8 +85,8 @@ func test() {
     
     // success case for food service employee enetring the kitchen --- allowed
     do {
-        print("Test case 6 ...")
-        let foodServiceEmployee = try FoodServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 7 ...")
+        let foodServiceEmployee = try FoodServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let kitchenPass = CheckPoint.generatePass(entrant: foodServiceEmployee)
         CheckPoint.checkPassForAreaAccess(pass: kitchenPass, to: .kitchenAreas)
         print("--- ")
@@ -77,8 +98,8 @@ func test() {
     
     // fail case for food service employee with missing first name to trigger the error
     do {
-        print("Test case 7 ...")
-        let foodServiceEmployee = try FoodServiceEmployee(firstName: nil, lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "12345")
+        print("Test case 8 ...")
+        let foodServiceEmployee = try FoodServiceEmployee(firstName: nil, lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "12345", dateOfBirth: nil)
         _ = CheckPoint.generatePass(entrant: foodServiceEmployee)
         print("--- ")
     } catch {
@@ -89,8 +110,8 @@ func test() {
     
     // success case for ride service employee enetring the ride area --- allowed
     do {
-        print("Test case 8 ...")
-        let rideServiceEmployee = try RideServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 9 ...")
+        let rideServiceEmployee = try RideServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let ridePass = CheckPoint.generatePass(entrant: rideServiceEmployee)
         CheckPoint.checkPassForAreaAccess(pass: ridePass, to: .rideControlAreas)
         print("--- ")
@@ -102,8 +123,8 @@ func test() {
     
     // fail case for ride service employee enetring the kitchen --- denied entry
     do {
-        print("Test case 9 ...")
-        let rideServiceEmployee = try RideServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 10 ...")
+        let rideServiceEmployee = try RideServiceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let ridePass = CheckPoint.generatePass(entrant: rideServiceEmployee)
         CheckPoint.checkPassForAreaAccess(pass: ridePass, to: .kitchenAreas)
         print("--- ")
@@ -115,8 +136,8 @@ func test() {
     
     // fail case for ride service employee --- Error missing last name
     do {
-        print("Test case 10 ...")
-        let rideServiceEmployee = try RideServiceEmployee(firstName: "jimmi", lastName: nil, streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 11 ...")
+        let rideServiceEmployee = try RideServiceEmployee(firstName: "jimmi", lastName: nil, streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let ridePass = CheckPoint.generatePass(entrant: rideServiceEmployee)
         CheckPoint.checkPassForAreaAccess(pass: ridePass, to: .rideControlAreas)
         print("--- ")
@@ -129,8 +150,8 @@ func test() {
     
     // success case for maintenance employee enetring the maintenance area --- allowed
     do {
-        print("Test case 11 ...")
-        let maintenanceEmployee = try MaintenanceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 12 ...")
+        let maintenanceEmployee = try MaintenanceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let maintenancePass = CheckPoint.generatePass(entrant: maintenanceEmployee)
         CheckPoint.checkPassForAreaAccess(pass: maintenancePass, to: .maintenanceAreas)
         print("--- ")
@@ -142,8 +163,8 @@ func test() {
     
     // fail case for maintenance employee, missing street address --- Error
     do {
-        print("Test case 12 ...")
-        let maintenanceEmployee = try MaintenanceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: nil, city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 13 ...")
+        let maintenanceEmployee = try MaintenanceEmployee(firstName: "jimmi", lastName: "jimson", streetAddress: nil, city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let maintenancePass = CheckPoint.generatePass(entrant: maintenanceEmployee)
         CheckPoint.checkPassForAreaAccess(pass: maintenancePass, to: .maintenanceAreas)
         print("--- ")
@@ -156,8 +177,8 @@ func test() {
     
     // success case for manager enetring the office area --- allowed
     do {
-        print("Test case 13 ...")
-        let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234")
+        print("Test case 14 ...")
+        let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let managerPass = CheckPoint.generatePass(entrant: manager)
         CheckPoint.checkPassForAreaAccess(pass: managerPass, to: .officeAreas)
         print("--- ")
@@ -170,8 +191,8 @@ func test() {
     
     // fail case for manager, missing zipcode  --- Error
     do {
-        print("Test case 14 ...")
-        let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: nil)
+        print("Test case 15 ...")
+        let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: nil, dateOfBirth: nil)
         let managerPass = CheckPoint.generatePass(entrant: manager)
         CheckPoint.checkPassForAreaAccess(pass: managerPass, to: .officeAreas)
         print("--- ")
@@ -179,5 +200,6 @@ func test() {
         print("Error: \(error)")
         print("--- ")
     }
+    
     
 }

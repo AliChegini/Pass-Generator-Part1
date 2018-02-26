@@ -6,6 +6,8 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
+import Foundation
+
 class Guest: Entrant {
     var firstName: String?
     var lastName: String?
@@ -16,11 +18,11 @@ class Guest: Entrant {
     var entrantType: EntrantType
     var areaAccess: [AreaAccess] = [.amusementAreas]
     var rideAccess: [RideAccess] = [.accessAllRides]
-    var dateOfBirth: Int?
+    var dateOfBirth: Date?
     var discountOnFood: Int?
     var discountOnMerchandise: Int?
     
-    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Date? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
@@ -36,7 +38,7 @@ class Guest: Entrant {
 }
 
 class ClassicGuest: Guest {
-    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType = .ClassicGuest, dateOfBirth: Int? = nil, discountOnFood: Int?  = nil, discountOnMerchandise: Int? = nil) {
+    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType = .ClassicGuest, dateOfBirth: Date? = nil, discountOnFood: Int?  = nil, discountOnMerchandise: Int? = nil) {
         super.init(entrantType: entrantType)
     }
 }
@@ -44,7 +46,7 @@ class ClassicGuest: Guest {
 
 class VIPGuest: Guest {
 
-    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType = .VIPGuest, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+    override init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType = .VIPGuest, dateOfBirth: Date? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
         super.init(entrantType: entrantType)
         self.rideAccess = [.accessAllRides, .skipAllRides]
         self.discountOnFood = 10
@@ -55,7 +57,7 @@ class VIPGuest: Guest {
 
 class ChildGuest: Guest {
     
-    init(dateOfBirth: Int?, entrantType: EntrantType = .ChildGuest) throws {
+    init(dateOfBirth: Date?, entrantType: EntrantType = .ChildGuest) throws {
         super.init(entrantType: entrantType)
         guard let dateOfBirthUnwrapped = dateOfBirth else {
             throw InitializerError.missingDateOfBirth

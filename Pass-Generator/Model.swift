@@ -6,7 +6,7 @@
 //  Copyright © 2018 Ali C. All rights reserved.
 //
 
-
+import Foundation
 
 // All the enums and protocols are defined in this file
 enum AreaAccess: String {
@@ -61,7 +61,7 @@ protocol Entrant: StaffInfo {
     var areaAccess: [AreaAccess] { get set }
     var rideAccess: [RideAccess] { get set }
     var entrantType: EntrantType { get set }
-    var dateOfBirth: Int? { get set }
+    var dateOfBirth: Date? { get set }
     var discountOnFood: Int? { get set }
     var discountOnMerchandise: Int? { get set }
 }
@@ -78,11 +78,11 @@ struct Pass: Entrant {
     var entrantType: EntrantType
     var rideAccess: [RideAccess] = []
     var areaAccess: [AreaAccess] = []
-    var dateOfBirth: Int?
+    var dateOfBirth: Date?
     var discountOnFood: Int?
     var discountOnMerchandise: Int?
     
-    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Int? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
+    init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Date? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
         self.firstName = firstName
         self.lastName = lastName
         self.streetAddress = streetAddress
