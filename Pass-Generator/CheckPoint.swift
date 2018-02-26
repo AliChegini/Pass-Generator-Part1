@@ -7,11 +7,16 @@
 //
 
 import Foundation
+import GameKit
 
 // Class to implement the logic for check point
 // Each check point can generate new pass,
 // and also check the generated pass from all other check points
 class CheckPoint {
+    
+    var scheduledTimer = Timer()
+    var swipeDelayTime: Int = 5
+    var staticSwipeDelayTime = 5
     
     // Static function to generate passes
     // Method takes an Entrant and return a Pass
@@ -111,15 +116,15 @@ class CheckPoint {
     static func checkPassForAreaAccess(pass: Pass, to area: AreaAccess) {
         if pass.areaAccess.contains(area) {
             print("\(pass.entrantType) --- Allowed entry to \(area)")
+            
             if pass.dateOfBirth != nil {
-                
                 let today = Date()
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd.MM.yy"
                 let formattedDateOfBirth = formatter.string(from: pass.dateOfBirth!)
                 let formattedToday = formatter.string(from: today)
                 
-                // first 5 characters are needed to check the birthday with the format defined above
+                // first 5 characters are needed to check the birthday with the format defined above --- dd.MM
                 if formattedDateOfBirth.prefix(5) == formattedToday.prefix(5) {
                     if let firstNameUnwrapped = pass.firstName {
                         print("Happy Birthday Dear \(firstNameUnwrapped)")
@@ -133,7 +138,19 @@ class CheckPoint {
         }
         
     }
+    
+    
+    func startTimer() {
+        scheduledTimer  = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkTimer), userInfo: nil, repeats: true)
+    }
+    
+    @objc func checkTimer() {
+        if swipeDelayTime < 5 {
+            print("Alert : You can only swipe once every 5 seconds!")
+        } else {
+            
+        }
+    
+    }
 
 }
-
-
