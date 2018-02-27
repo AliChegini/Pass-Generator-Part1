@@ -181,6 +181,7 @@ func test() {
         let manager = try Manager(firstName: "jimmi", lastName: "jimson", streetAddress: "abc aVN", city: "ibiza", state: "spain", zipCode: "1234", dateOfBirth: nil)
         let managerPass = CheckPoint.generatePass(entrant: manager)
         CheckPoint.checkPassForAreaAccess(pass: managerPass, to: .officeAreas)
+        CheckPoint.checkPassForAreaAccess(pass: managerPass, to: .officeAreas)
         print("--- ")
     } catch {
         print("Error: \(error)")

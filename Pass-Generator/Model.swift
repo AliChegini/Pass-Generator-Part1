@@ -7,8 +7,9 @@
 //
 
 import Foundation
-
 // All the enums and protocols are defined in this file
+
+
 enum AreaAccess: String {
     case amusementAreas
     case kitchenAreas

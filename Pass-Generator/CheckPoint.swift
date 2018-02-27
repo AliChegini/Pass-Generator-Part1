@@ -7,19 +7,13 @@
 //
 
 import Foundation
-import GameKit
+
 
 // Class to implement the logic for check point
 // Each check point can generate new pass,
 // and also check the generated pass from all other check points
 class CheckPoint {
-    
-    var scheduledTimer = Timer()
-    var swipeDelayTime: Int = 5
-    var staticSwipeDelayTime = 5
-    
-    // Static function to generate passes
-    // Method takes an Entrant and return a Pass
+    // Static function to generate passes, takes an Entrant and return a Pass
     // This method can generate all type of passes
     static func generatePass(entrant: Entrant) -> Pass {
         // finalPass will be assigned with a pass to be returned
@@ -109,14 +103,21 @@ class CheckPoint {
         return finalPass
     }
     
+    static var nextTimeStamp: Date? = nil
     
     // Method to check the pass and allow entry to areas
-    // Equivalent to Swipe method
-    // This method can handle all type of passes
+    // Equivalent to Swipe method, This method can handle all type of passes
     static func checkPassForAreaAccess(pass: Pass, to area: AreaAccess) {
+        var firstTimeStamp = Date()
+        print(firstTimeStamp)
+        nextTimeStamp = firstTimeStamp.addingTimeInterval(5)
+        print(nextTimeStamp!)
+        
         if pass.areaAccess.contains(area) {
+            TimerFeature.startTimer()
             print("\(pass.entrantType) --- Allowed entry to \(area)")
             
+            // Extra credit , birthday message
             if pass.dateOfBirth != nil {
                 let today = Date()
                 let formatter = DateFormatter()
@@ -133,24 +134,11 @@ class CheckPoint {
                     }
                 }
             }
+        
         } else {
             print("\(pass.entrantType) --- Denied entry to \(area)")
         }
-        
     }
     
     
-    func startTimer() {
-        scheduledTimer  = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkTimer), userInfo: nil, repeats: true)
-    }
-    
-    @objc func checkTimer() {
-        if swipeDelayTime < 5 {
-            print("Alert : You can only swipe once every 5 seconds!")
-        } else {
-            
-        }
-    
-    }
-
 }
