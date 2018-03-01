@@ -34,6 +34,7 @@ enum InitializerError: Error {
     case missingCity
     case missingState
     case missingZipCode
+    case olderThanAgeLimit
 }
 
 enum EntrantType: String {
@@ -68,8 +69,13 @@ protocol Entrant: StaffInfo {
 }
 
 
+protocol SwipeTime {
+    var swipeTime: Date? { get set }
+}
+
+
 // Struct to hold uniform passes
-struct Pass: Entrant {
+struct Pass: Entrant, SwipeTime {
     var firstName: String?
     var lastName: String?
     var streetAddress: String?
@@ -82,6 +88,7 @@ struct Pass: Entrant {
     var dateOfBirth: Date?
     var discountOnFood: Int?
     var discountOnMerchandise: Int?
+    var swipeTime: Date? = nil
     
     init(firstName: String? = nil, lastName: String? = nil, streetAddress: String? = nil, city: String? = nil, state: String? = nil, zipCode: String? = nil, entrantType: EntrantType, dateOfBirth: Date? = nil, discountOnFood: Int? = nil, discountOnMerchandise: Int? = nil) {
         self.firstName = firstName

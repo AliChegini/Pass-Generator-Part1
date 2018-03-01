@@ -56,13 +56,25 @@ class VIPGuest: Guest {
 
 
 class ChildGuest: Guest {
+    let maxChildAge: Int = 5
     
     init(dateOfBirth: Date?, entrantType: EntrantType = .ChildGuest) throws {
         super.init(entrantType: entrantType)
         guard let dateOfBirthUnwrapped = dateOfBirth else {
             throw InitializerError.missingDateOfBirth
         }
-        self.dateOfBirth = dateOfBirthUnwrapped
+        
+        let calendar = Calendar.current
+        let ageComponent = calendar.dateComponents([.year], from: dateOfBirthUnwrapped , to: Date())
+        
+        if let ageComponentUnwrapped = ageComponent.year {
+            if ageComponentUnwrapped <= maxChildAge {
+                self.dateOfBirth = dateOfBirthUnwrapped
+            } else {
+                throw InitializerError.olderThanAgeLimit
+            }
+        }
+        
     }
 }
 

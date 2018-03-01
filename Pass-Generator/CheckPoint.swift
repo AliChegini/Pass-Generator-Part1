@@ -13,6 +13,10 @@ import Foundation
 // Each check point can generate new pass,
 // and also check the generated pass from all other check points
 class CheckPoint {
+    static let delayInSeconds: Double = 5
+    static let numberOfCharacters: Int = 5    // Number of characters to compare for birthday - dd.MM
+    
+    
     // Static function to generate passes, takes an Entrant and return a Pass
     // This method can generate all type of passes
     static func generatePass(entrant: Entrant) -> Pass {
@@ -103,19 +107,33 @@ class CheckPoint {
         return finalPass
     }
     
-    static var nextTimeStamp: Date? = nil
     
     // Method to check the pass and allow entry to areas
     // Equivalent to Swipe method, This method can handle all type of passes
-    static func checkPassForAreaAccess(pass: Pass, to area: AreaAccess) {
-        var firstTimeStamp = Date()
-        print(firstTimeStamp)
-        nextTimeStamp = firstTimeStamp.addingTimeInterval(5)
-        print(nextTimeStamp!)
+    static func checkPassForAreaAccess(pass: inout Pass, to area: AreaAccess) {
         
         if pass.areaAccess.contains(area) {
-            TimerFeature.startTimer()
-            print("\(pass.entrantType) --- Allowed entry to \(area)")
+            // Extra credit, preventing swipe
+            // if pass is already swiped, pass.swipe is not nil
+            // prevent new swipes sooner than 5 seconds
+            if let registeredSwipeTime = pass.swipeTime {
+                let currentTime = Date()
+                let registeredSwipeTimePlusDelay = registeredSwipeTime.addingTimeInterval(delayInSeconds)
+                if currentTime < registeredSwipeTimePlusDelay {
+                    print("Alert: Your pass has just been swiped, Try again later...")
+                    print("Current Time: \(currentTime)")
+                    print("Last Swipe  : \(registeredSwipeTime)")
+                } else {
+                    pass.swipeTime = currentTime
+                    print("\(pass.entrantType) --- Allowed entry to \(area) at \(pass.swipeTime!)")
+                }
+            // if pass is not swiped yet, pass.swipe is nil
+            // current time will be assigned to pass.swipeTime and allow entry
+            } else {
+                pass.swipeTime = Date()
+                print("Pass swiped at: \(pass.swipeTime!)")
+                print("\(pass.entrantType) --- Allowed entry to \(area) at \(pass.swipeTime!)")
+            }
             
             // Extra credit , birthday message
             if pass.dateOfBirth != nil {
@@ -125,8 +143,8 @@ class CheckPoint {
                 let formattedDateOfBirth = formatter.string(from: pass.dateOfBirth!)
                 let formattedToday = formatter.string(from: today)
                 
-                // first 5 characters are needed to check the birthday with the format defined above --- dd.MM
-                if formattedDateOfBirth.prefix(5) == formattedToday.prefix(5) {
+                // first 5 characters are needed to check the birthday with the following format -> dd.MM
+                if formattedDateOfBirth.prefix(numberOfCharacters) == formattedToday.prefix(numberOfCharacters) {
                     if let firstNameUnwrapped = pass.firstName {
                         print("Happy Birthday Dear \(firstNameUnwrapped)")
                     } else {
@@ -140,5 +158,6 @@ class CheckPoint {
         }
     }
     
-    
 }
+
+
